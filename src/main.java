@@ -11,6 +11,17 @@ import java.util.Scanner;
 public class main {
 
     public static void main(String[] args) {
+        System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
+        Scanner scanner = new Scanner(System.in);
+        Menu menu = new Menu(scanner);
+        FileReader file = new FileReader(scanner);
+        file.show();
+        String fileToRead = file.getOption();
+
+        //Operations operation = new Operations();
+        menu.show();
+        int option = menu.getOption();
+
         //Prepare view
         final ScheduleView view = new ScheduleView();
 
@@ -75,17 +86,5 @@ public class main {
         for(int i = 0; i < categories.length; i++) {
             view.setCategoryContent(i + 1, categories[i]);
         }
-
-
-        System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
-        Scanner scanner = new Scanner(System.in);
-        Menu menu = new Menu(scanner);
-        FileReader file = new FileReader(scanner);
-        file.show();
-        String fileToRead = file.getOption();
-
-        //Operations operation = new Operations();
-        menu.show();
-        int option = menu.getOption();
     }
 }
