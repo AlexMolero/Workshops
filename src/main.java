@@ -18,6 +18,10 @@ public class main {
         file.show();
         String fileToRead = file.getOption();
 
+
+
+
+
         //Operations operation = new Operations();
         menu.show();
         int option = menu.getOption();

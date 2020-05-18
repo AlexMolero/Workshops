@@ -6,7 +6,7 @@ public class Workshop extends Date{
     private String acronym;
     private float price;
     private int category;
-    private int numHorarios;
+    public int numHorarios;
     List<Date> date = new ArrayList<>();
 
     public Workshop(int hour, int day, String acronym, float price, int category, int numHorarios, List<Date> date) {
@@ -20,6 +20,10 @@ public class Workshop extends Date{
         date_new.setDay(day);
         date_new.setHour(hour);
         this.date.add(date_new);
+    }
+
+    public Workshop() {
+
     }
 
     public String getAcronym() {
