@@ -11,16 +11,20 @@ import java.util.Scanner;
 public class main {
 
     public static void main(String[] args) {
+        int Num_Workshops = 0;
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
         Backtracking backtracking = new Backtracking();
+        Marcaje marcaje = new Marcaje();
         FileReader file = new FileReader(scanner);
         file.show();
         String fileToRead = file.getOption();
         //Operations operation = new Operations();
         boolean mejora;
-        int option;
+        int option, presupuestoMaximo;
+        int[] configuracion = new int[Num_Workshops];
+        int k = 0;
         do{
             menu.show();
             option = menu.getOption();
@@ -28,25 +32,28 @@ public class main {
                 case 1:
                     mejora = menu.mejora();
                     if (mejora){
-                        backtracking.Backtracking1SinMejora();
+                        backtracking.Backtracking1SinMejora(configuracion, k);
                     } else {
-                        backtracking.Backtracking1ConMejora();
+                        backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
                     }
                     break;
                 case 2:
                     mejora = menu.mejora();
                     if (mejora){
-                        backtracking.Backtracking2SinMejora();
+                        backtracking.Backtracking2SinMejora(configuracion, k);
                     } else {
-                        backtracking.Backtracking2ConMejora();
+                        backtracking.Backtracking2ConMejora(configuracion, k, marcaje);
                     }
                     break;
                 case 3:
                     mejora = menu.mejora();
+                    System.out.print("Introduce el presupuesto maximo: ");
+                    String strPresupuesto = scanner.nextLine();
+                    presupuestoMaximo =  Integer.parseInt(strPresupuesto);
                     if (mejora){
-                        backtracking.Backtracking3SinMejora();
+                        backtracking.Backtracking3SinMejora(configuracion, k, presupuestoMaximo);
                     } else {
-                        backtracking.Backtracking3ConMejora();
+                        backtracking.Backtracking3ConMejora(configuracion, k, presupuestoMaximo, marcaje);
                     }
                     break;
                 default:

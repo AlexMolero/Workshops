@@ -13,6 +13,10 @@ public class Marcaje {
         this.horarios = horarios;
     }
 
+    public Marcaje() {
+
+    }
+
     public float getPresupuesto() {
         return presupuesto;
     }

@@ -5,7 +5,6 @@ public class Backtracking{
     private int[][] incompatibilidad;
     private int Num_Workshops;
     private int numSoluciones;
-    private int[] configuracion = new int[Num_Workshops];
     private int Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
