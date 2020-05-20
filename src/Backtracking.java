@@ -2,16 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Backtracking{
-    public int[][] incompatibilidad;
-    public int Num_Workshops;
-    public int numSoluciones;
+    private int[][] incompatibilidad;
+    private int Num_Workshops;
+    private int numSoluciones;
     private int[] configuracion = new int[Num_Workshops];
     private int k;
     private int Vmejor;
     private int[] Xmejor = new int[Num_Workshops];
     List<Workshop> workshop = new ArrayList<>();
-    List<Marcaje> marcaje = new ArrayList<>();
-
 
     public void Backtracking1SinMejora(int[] x, int k){
         x[k] = -1;
@@ -72,7 +70,8 @@ public class Backtracking{
                 }
                 for (int j = 0; j < workshop.get(i).getNumHorarios(); j++) {
                     for (int l = 0; l < workshop.get(k).getNumHorarios(); l++) {
-                        if (workshop.get(i).getDay() == workshop.get(k).getDay() && workshop.get(i).getHour() == workshop.get(k).getHour()){
+                        //Todo Esto esta mal!!!!!
+                        if (workshop.get(k).getDay() == workshop.get(i).getDay() && workshop.get(k).getHour() == workshop.get(i).getHour()){
                             return false;
                         }
                     }
@@ -140,55 +139,80 @@ public class Backtracking{
 
     //Empiezan las funciones con mejoras.
 
-    public void Backtracking1ConMejora(int[] x, int k){
+    public void Backtracking1ConMejora(int[] x, int k, Marcaje m){
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
+            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                m.horarios.add(workshop.get(k).date.get(i));
+            }
             if (k == Num_Workshops){
-                if (buenaConMejora(x, k)) {
+                if (buenaConMejora(x, k, m)) {
                     numSoluciones++;
                 }
             } else if (k < Num_Workshops){
-                if (buenaConMejora(x, k)) {
-                    Backtracking1SinMejora(x, k);
+                if (buenaConMejora(x, k, m)) {
+                    Backtracking1ConMejora(x, k, m);
                 }
+            }
+            for (int i = 0; i < m.horarios.size(); i++) {
+                m.horarios.remove(m.horarios.get(i));
             }
         }
     }
 
-    public void Backtracking2ConMejora(int[] x, int k){
+    public void Backtracking2ConMejora(int[] x, int k, Marcaje m){
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
+            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                m.horarios.add(workshop.get(k).date.get(i));
+            }
+            m.num_horas_totales += workshop.get(k).numHorarios;
             if (k == Num_Workshops){
-                if (buenaConMejora(x, k)) {
-                    tratarSolucion2SinMejora(x, k);
+                if (buenaConMejora(x, k, m)) {
+                    tratarSolucion2ConMejora(x, k, m);
                 }
             } else if (k < Num_Workshops){
-                if (buenaConMejora(x, k)) {
-                    Backtracking2SinMejora(x, k);
+                if (buenaConMejora(x, k, m)) {
+                    Backtracking2ConMejora(x, k, m);
                 }
             }
+            for (int i = 0; i < m.horarios.size(); i++) {
+                m.horarios.remove(m.horarios.get(i));
+            }
+            m.num_horas_totales -= workshop.get(k).numHorarios;
         }
     }
 
-    public void Backtracking3ConMejora(int[] x, int k, float presupuestoMaximo){
+    public void Backtracking3ConMejora(int[] x, int k, float presupuestoMaximo, Marcaje m){
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
+            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                m.horarios.add(workshop.get(k).date.get(i));
+            }
+            m.categorias[workshop.get(k).getCategory()]++;
+            m.presupuesto += workshop.get(k).getPrice();
             if (k == Num_Workshops){
-                if (buenaConMejora(x, k)) {
-                    tratarSolucion3SinMejora(x, k, presupuestoMaximo);
+                if (buenaConMejora(x, k, m)) {
+                    tratarSolucion3ConMejora(x, k, presupuestoMaximo, m);
                 }
             } else if (k < Num_Workshops){
-                if (buenaConMejora(x, k)) {
-                    Backtracking3SinMejora(x, k, presupuestoMaximo);
+                if (buenaConMejora(x, k, m)) {
+                    Backtracking3ConMejora(x, k, presupuestoMaximo, m);
                 }
             }
+            for (int i = 0; i < m.horarios.size(); i++) {
+                m.horarios.remove(m.horarios.get(i));
+            }
+            m.categorias[workshop.get(k).getCategory()]--;
+            m.presupuesto -= workshop.get(k).getPrice();
         }
+
     }
 
-    public boolean buenaConMejora(int[] x, int k){
+    public boolean buenaConMejora(int[] x, int k, Marcaje m){
         if (x[k] == 0){
             return true;
         }
@@ -197,74 +221,42 @@ public class Backtracking{
                 if (incompatibilidad[k][i] == 0){
                     return false;
                 }
-                for (int j = 0; j < workshop.get(i).getNumHorarios(); j++) {
-                    for (int l = 0; l < workshop.get(k).getNumHorarios(); l++) {
-                        if (workshop.get(i).getDay() == workshop.get(k).getDay() && workshop.get(i).getHour() == workshop.get(k).getHour()){
-                            return false;
-                        }
-                    }
+            }
+        }
+        for (int j = 0; j < workshop.get(k).getNumHorarios(); j++) {
+            for (int l = 0; l < m.horarios.size(); l++) {
+                //Todo Esto esta mal!!!!!
+                if (workshop.get(k).getDay() == workshop.get(l).getDay() && workshop.get(k).getHour() == workshop.get(l).getHour()){
+                    return false;
                 }
             }
         }
         return true;
     }
 
-    public void tratarSolucion2ConMejora(int[] x, int k){
-        int num_total_horas = 0;
-        for (int i = 0; i < k; i++) {
-            if (x[i] == 1){
-                num_total_horas += workshop.get(i).getNumHorarios();
-            }
-        }
-        if (num_total_horas > Vmejor){
+    public void tratarSolucion2ConMejora(int[] x, int k, Marcaje m){
+        if (m.num_horas_totales > Vmejor){
             Xmejor = x;
-            Vmejor = num_total_horas;
+            Vmejor = m.num_horas_totales;
         }
     }
 
-    public void tratarSolucion3ConMejora(int[] x, int k, float presupuestoMaximo){
+    public void tratarSolucion3ConMejora(int[] x, int k, float presupuestoMaximo, Marcaje m){
         int num_total_categorias = 0;
-        float presupuesto = 0;
-        int[] numCategorias = new int[5];
-        for (int i = 0; i < k; i++) {
-            if (x[i] == 1){
-                switch (workshop.get(i).getCategory()){
-                    case 1:
-                        numCategorias[0]++;
-                        break;
-                    case 2:
-                        numCategorias[1]++;
-                        break;
-                    case 3:
-                        numCategorias[2]++;
-                        break;
-                    case 4:
-                        numCategorias[3]++;
-                        break;
-                    case 5:
-                        numCategorias[4]++;
-                        break;
-                }
-                presupuesto += workshop.get(i).getPrice();
-            }
-        }
         for (int i = 0; i < 5; i++) {
-            if (numCategorias[i] > 0){
+            if (m.categorias[i] > 0){
                 num_total_categorias++;
             }
         }
         if (num_total_categorias == 2){
-            presupuesto -= presupuesto*0.05;
+            m.presupuesto -= m.presupuesto*0.05;
         }
         if (num_total_categorias > 2){
-            presupuesto -= presupuesto*0.15;
+            m.presupuesto -= m.presupuesto*0.15;
         }
-        if (presupuesto < presupuestoMaximo && presupuesto > Vmejor){
+        if (m.presupuesto < presupuestoMaximo && m.presupuesto > Vmejor){
             Xmejor = x;
-            Vmejor = (int)presupuesto;
+            Vmejor = (int)m.presupuesto;
         }
     }
-
-
-
 }
