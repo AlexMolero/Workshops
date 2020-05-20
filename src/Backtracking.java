@@ -6,10 +6,12 @@ public class Backtracking{
     private int Num_Workshops;
     private int numSoluciones;
     private int[] configuracion = new int[Num_Workshops];
-    private int k;
-    private int Vmejor;
+    private int Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
-    List<Workshop> workshop = new ArrayList<>();
+    private List<Workshop> workshop = new ArrayList<>();
+
+
+
 
     public void Backtracking1SinMejora(int[] x, int k){
         x[k] = -1;

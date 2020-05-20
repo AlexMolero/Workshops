@@ -14,18 +14,49 @@ public class main {
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
+        Backtracking backtracking = new Backtracking();
         FileReader file = new FileReader(scanner);
         file.show();
         String fileToRead = file.getOption();
-
-
-
-
-
         //Operations operation = new Operations();
-        menu.show();
-        int option = menu.getOption();
+        boolean mejora;
+        int option;
+        do{
+            menu.show();
+            option = menu.getOption();
+            switch (option){
+                case 1:
+                    mejora = menu.mejora();
+                    if (mejora){
+                        backtracking.Backtracking1SinMejora();
+                    } else {
+                        backtracking.Backtracking1ConMejora();
+                    }
+                    break;
+                case 2:
+                    mejora = menu.mejora();
+                    if (mejora){
+                        backtracking.Backtracking2SinMejora();
+                    } else {
+                        backtracking.Backtracking2ConMejora();
+                    }
+                    break;
+                case 3:
+                    mejora = menu.mejora();
+                    if (mejora){
+                        backtracking.Backtracking3SinMejora();
+                    } else {
+                        backtracking.Backtracking3ConMejora();
+                    }
+                    break;
+                default:
+                    System.out.print("Error. Opcion no valida.");
+                    break;
+            }
+        } while (true);
+    }
 
+    public void mostrar(){
         //Prepare view
         final ScheduleView view = new ScheduleView();
 

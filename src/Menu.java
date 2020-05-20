@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Menu {
@@ -9,10 +10,10 @@ public class Menu {
     }
 
     public void show() {
-
-        System.out.println("1-Todas las configuraciones posibles.");
-        System.out.println("2-Maximizar horas.");
-        System.out.println("3-Maximizar presupuesto disponible.");
+        System.out.println("Selecciona un objetivo");
+        System.out.println("  1-Todas las configuraciones posibles.");
+        System.out.println("  2-Maximizar horas.");
+        System.out.println("  3-Maximizar presupuesto disponible.\n");
     }
 
     public int getOption() {
@@ -21,5 +22,11 @@ public class Menu {
         String strOption = scanner.nextLine();
 
         return Integer.parseInt(strOption);
+    }
+
+    boolean mejora(){
+        System.out.print("¿Quieres aplicar mejoras en la eficiencia? (s/n) ");
+        String strMejora = scanner.nextLine();
+        return Boolean.parseBoolean(strMejora);
     }
 }
