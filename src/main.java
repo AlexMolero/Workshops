@@ -3,23 +3,37 @@ import view.ScheduleView;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.net.StandardSocketOptions;
+import java.io.FileReader;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class main {
-
+    private static String path = "Dataset/";
     public static void main(String[] args) {
         int Num_Workshops = 0;
+        List<Workshop> WorkshopConfig = new ArrayList<Workshop>();
+        int[][] compatibilityArray = new int[50][50];
+
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
         Backtracking backtracking = new Backtracking();
         Marcaje marcaje = new Marcaje();
-        FileReader file = new FileReader(scanner);
+        ReadFile file = new ReadFile(scanner);
         file.show();
         String fileToRead = file.getOption();
+        File archivo = new File(path+fileToRead);
+        String extension = file.getFileExtension(archivo);
+        if(extension.equals(".json")){
+            //READ JSON
+            WorkshopConfig =   file.readJsonWorkshop(path+fileToRead);
+            compatibilityArray = file.readJsonCompatibilities(path+fileToRead);
+        }else{
+            System.out.println("Solo es valido un fichero json");
+        }
         //Operations operation = new Operations();
         boolean mejora;
         int option, presupuestoMaximo;
@@ -64,14 +78,18 @@ public class main {
     }
 
     public void mostrar(){
+        menu.show();
+        int option = menu.getOption();
+        menu.actions(option);
         //Prepare view
+
         final ScheduleView view = new ScheduleView();
 
         //Show view
         SwingUtilities.invokeLater(() -> view.setVisible(true));
 
         /*****************
-         SAMPLE CODE
+            SAMPLE CODE
          ****************/
         //Set cells content
         int[] categories = new int[5];

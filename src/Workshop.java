@@ -8,18 +8,16 @@ public class Workshop extends Date{
     private int category;
     public int numHorarios;
     List<Date> date = new ArrayList<>();
+    List<Integer> rgb = new ArrayList<>();
 
-    public Workshop(int hour, int day, String acronym, float price, int category, int numHorarios, List<Date> date) {
-        super(hour, day);
+    public Workshop() { }
+    public Workshop(String acronym, float price, int category, int numHorarios, List<Date> date, List<Integer> rgb) {
         this.acronym = acronym;
         this.price = price;
         this.category = category;
         this.numHorarios = numHorarios;
-
-        Date date_new = new Date();
-        date_new.setDay(day);
-        date_new.setHour(hour);
-        this.date.add(date_new);
+        this.date = date;
+        this.rgb = rgb;
     }
 
     public Workshop() {
