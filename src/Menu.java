@@ -39,8 +39,16 @@ public class Menu {
     }
 
     boolean mejora(){
-        System.out.print("¿Quieres aplicar mejoras en la eficiencia? (s/n) ");
-        String strMejora = scanner.nextLine();
-        return Boolean.parseBoolean(strMejora);
+        while (true){
+            System.out.print("¿Quieres aplicar mejoras en la eficiencia? (s/n) ");
+            String strMejora = scanner.nextLine();
+            if  (strMejora.equals("s")){
+                return true;
+            } else if (strMejora.equals("n")){
+                return false;
+            } else {
+                System.out.println("Error. Introduce \"s\" o \"n\"");
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ public class Backtracking{
     private int[][] incompatibilidad;
     private int Num_Workshops;
     private int numSoluciones;
-    private int Vmejor = 0;
+    private float Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
 
@@ -16,13 +16,12 @@ public class Backtracking{
     }
 
     public void Backtracking1SinMejora(int[] x, int k){
-        x[k] = 2;
-        while (x[k] >=0){
-            x[k]--;
+        x[k] = -1;
+        while (x[k] < 1){
+            x[k]++;
             if (k == (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
                     System.out.println("NUEVA SOLUCION" + numSoluciones);
-
                     numSoluciones++;
                 }
             } else if (k < (Num_Workshops-1)){
@@ -31,20 +30,19 @@ public class Backtracking{
                 }
             }
         }
-
     }
 
     public void Backtracking2SinMejora(int[] x, int k){
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
-            if (k == Num_Workshops){
+            if (k == Num_Workshops-1){
                 if (buenaSinMejora(x, k)) {
                     tratarSolucion2SinMejora(x, k);
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < Num_Workshops-1){
                 if (buenaSinMejora(x, k)) {
-                    Backtracking2SinMejora(x, k);
+                    Backtracking2SinMejora(x, (k+1));
                 }
             }
         }
@@ -54,13 +52,13 @@ public class Backtracking{
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
-            if (k == Num_Workshops){
+            if (k == Num_Workshops-1){
                 if (buenaSinMejora(x, k)) {
                     tratarSolucion3SinMejora(x, k, presupuestoMaximo);
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < Num_Workshops-1){
                 if (buenaSinMejora(x, k)) {
-                    Backtracking3SinMejora(x, k, presupuestoMaximo);
+                    Backtracking3SinMejora(x, (k+1), presupuestoMaximo);
                 }
             }
         }
@@ -98,6 +96,7 @@ public class Backtracking{
         if (num_total_horas > Vmejor){
             Xmejor = x;
             Vmejor = num_total_horas;
+            System.out.println("Numero total de horas: " + num_total_horas);
         }
     }
 
@@ -140,7 +139,8 @@ public class Backtracking{
         }
         if (presupuesto < presupuestoMaximo && presupuesto > Vmejor){
             Xmejor = x;
-            Vmejor = (int)presupuesto;
+            Vmejor = presupuesto;
+            System.out.println("Presupuesto: " + presupuesto);
         }
     }
 
@@ -156,10 +156,11 @@ public class Backtracking{
             if (k == Num_Workshops){
                 if (buenaConMejora(x, k, m)) {
                     numSoluciones++;
+                    System.out.println("Nueva solucion: " + numSoluciones);
                 }
             } else if (k < Num_Workshops){
                 if (buenaConMejora(x, k, m)) {
-                    Backtracking1ConMejora(x, k, m);
+                    Backtracking1ConMejora(x, (k+1), m);
                 }
             }
             for (int i = 0; i < m.horarios.size(); i++) {
@@ -182,7 +183,7 @@ public class Backtracking{
                 }
             } else if (k < Num_Workshops){
                 if (buenaConMejora(x, k, m)) {
-                    Backtracking2ConMejora(x, k, m);
+                    Backtracking2ConMejora(x, (k+1), m);
                 }
             }
             for (int i = 0; i < m.horarios.size(); i++) {
@@ -207,7 +208,7 @@ public class Backtracking{
                 }
             } else if (k < Num_Workshops){
                 if (buenaConMejora(x, k, m)) {
-                    Backtracking3ConMejora(x, k, presupuestoMaximo, m);
+                    Backtracking3ConMejora(x, (k+1), presupuestoMaximo, m);
                 }
             }
             for (int i = 0; i < m.horarios.size(); i++) {

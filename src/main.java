@@ -47,19 +47,15 @@ public class main {
             switch (option){
                 case 1:
                     mejora = menu.mejora();
-                        backtracking.Backtracking1SinMejora(configuracion, k);
-
-                    System.out.println("HOLA");
-                    /*
-                    if (mejora){
+                    if (!mejora){
                         backtracking.Backtracking1SinMejora(configuracion, k);
                     } else {
                         backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
-                    }*/
+                    }
                     break;
                 case 2:
                     mejora = menu.mejora();
-                    if (mejora){
+                    if (!mejora){
                         backtracking.Backtracking2SinMejora(configuracion, k);
                     } else {
                         backtracking.Backtracking2ConMejora(configuracion, k, marcaje);
@@ -70,7 +66,7 @@ public class main {
                     System.out.print("Introduce el presupuesto maximo: ");
                     String strPresupuesto = scanner.nextLine();
                     presupuestoMaximo =  Integer.parseInt(strPresupuesto);
-                    if (mejora){
+                    if (!mejora){
                         backtracking.Backtracking3SinMejora(configuracion, k, presupuestoMaximo);
                     } else {
                         backtracking.Backtracking3ConMejora(configuracion, k, presupuestoMaximo, marcaje);

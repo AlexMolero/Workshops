@@ -11,6 +11,7 @@ public class Workshop extends Date{
     List<Integer> rgb = new ArrayList<>();
 
     public Workshop() { }
+
     public Workshop(String acronym, float price, int category, int numHorarios, List<Date> date, List<Integer> rgb) {
         this.acronym = acronym;
         this.price = price;
