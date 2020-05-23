@@ -4,15 +4,29 @@ import java.util.List;
 public class Backtracking{
     private int[][] incompatibilidad;
     private int Num_Workshops;
-    private int numSoluciones;
-    private float Vmejor = 0;
+    private int numSoluciones = 0;
+    private int Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
+    private int[] configuracion = new int[Num_Workshops];
 
     public Backtracking(int[][] incompatibilidad, List<Workshop> workshop) {
         this.incompatibilidad = incompatibilidad;
         this.workshop = workshop;
         Num_Workshops = workshop.size();
+
+    }
+
+    public int[] getConfiguracion() {
+        return configuracion;
+    }
+
+    public void setConfiguracion(int[] configuracion) {
+        this.configuracion = configuracion;
+    }
+
+    public int getNumSoluciones() {
+        return numSoluciones;
     }
 
     public void Backtracking1SinMejora(int[] x, int k){
@@ -21,8 +35,9 @@ public class Backtracking{
             x[k]++;
             if (k == (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
-                    System.out.println("NUEVA SOLUCION" + numSoluciones);
                     numSoluciones++;
+                    setConfiguracion(x);
+                    System.out.println("NUEVA SOLUCION" + numSoluciones);
                 }
             } else if (k < (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
@@ -139,7 +154,7 @@ public class Backtracking{
         }
         if (presupuesto < presupuestoMaximo && presupuesto > Vmejor){
             Xmejor = x;
-            Vmejor = presupuesto;
+            //Vmejor = presupuesto;
             System.out.println("Presupuesto: " + presupuesto);
         }
     }
