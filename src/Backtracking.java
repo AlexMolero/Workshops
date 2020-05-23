@@ -5,16 +5,59 @@ public class Backtracking{
     private int[][] incompatibilidad;
     private int Num_Workshops;
     private int numSoluciones = 0;
-    private float Vmejor = 0;
+    private int Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
     private int[] configuracion = new int[Num_Workshops];
+    private long tiempo_proceso=0;
+    private int[] arr = new int[50];
+    private float presupuesto_final;
+    private float presupuesto_limite;
 
     public Backtracking(int[][] incompatibilidad, List<Workshop> workshop) {
         this.incompatibilidad = incompatibilidad;
         this.workshop = workshop;
         Num_Workshops = workshop.size();
+    }
 
+    public float getPresupuesto() {
+        return presupuesto_final;
+    }
+
+    public float getPresupuesto_limite() {
+        return presupuesto_limite;
+    }
+
+    public void setPresupuesto_limite(float presupuesto_limite) {
+        this.presupuesto_limite = presupuesto_limite;
+    }
+
+    public void setPresupuesto(float presupuesto) {
+        this.presupuesto_final = presupuesto;
+    }
+
+    public int getVmejor() {
+        return Vmejor;
+    }
+
+    public long getTiempo_proceso() {
+        return tiempo_proceso;
+    }
+
+    public void setTiempo_proceso(long tiempo_proceso) {
+        this.tiempo_proceso = tiempo_proceso;
+    }
+
+    public void setVmejor(int vmejor) {
+        Vmejor = vmejor;
+    }
+
+    public int[] getArr() {
+        return arr;
+    }
+
+    public void setArr(int[] arr) {
+        this.arr = arr;
     }
 
     public int[] getConfiguracion() {
@@ -28,7 +71,11 @@ public class Backtracking{
     public int getNumSoluciones() {
         return numSoluciones;
     }
-
+    public void rellenarConfiguracion(int[] x, int[] arr){
+        for(int i=0;i<x.length;i++){
+            arr[i] = x[i];
+        }
+    }
     public void Backtracking1SinMejora(int[] x, int k){
         x[k] = -1;
         while (x[k] < 1){
@@ -36,8 +83,7 @@ public class Backtracking{
             if (k == (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
                     numSoluciones++;
-                    setConfiguracion(x);
-                    System.out.println("NUEVA SOLUCION" + numSoluciones);
+                    rellenarConfiguracion(x,arr);
                 }
             } else if (k < (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
@@ -109,8 +155,10 @@ public class Backtracking{
         }
         if (num_total_horas > Vmejor){
             Xmejor = x;
+            rellenarConfiguracion(x,arr);
+
             Vmejor = num_total_horas;
-            System.out.println("Numero total de horas: " + num_total_horas);
+            //System.out.println("Numero total de horas: " + num_total_horas);
         }
     }
 
@@ -151,9 +199,11 @@ public class Backtracking{
         if (num_total_categorias > 2){
             presupuesto -= presupuesto*0.15;
         }
-        if (presupuesto < presupuestoMaximo && presupuesto > Vmejor){
+        if (presupuesto < presupuestoMaximo && presupuesto > presupuesto_final){
             Xmejor = x;
-            Vmejor = presupuesto;
+            rellenarConfiguracion(x,arr);
+            setPresupuesto(presupuesto);
+            //Vmejor = presupuesto;
             System.out.println("Presupuesto: " + presupuesto);
         }
     }
@@ -288,9 +338,9 @@ public class Backtracking{
         if (num_total_categorias > 2){
             m.presupuesto -= m.presupuesto*0.15;
         }
-        if (m.presupuesto < presupuestoMaximo && m.presupuesto > Vmejor){
+        if (m.presupuesto < presupuestoMaximo && m.presupuesto > presupuesto_final){
             Xmejor = x;
-            Vmejor = m.presupuesto;
+            presupuesto_final = m.presupuesto;
             System.out.println("Preupuesto: " + m.presupuesto);
         }
     }

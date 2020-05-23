@@ -9,7 +9,7 @@ import java.util.List;
 public class Table {
     public Table() {
     }
-    public void mostrar(Backtracking backtracking, List<Workshop> workshop){
+    public void mostrar(Backtracking backtracking, List<Workshop> workshop, int opcion){
 
         final ScheduleView view = new ScheduleView();
 
@@ -22,7 +22,17 @@ public class Table {
         //Set cells content
         int[] categories = new int[5];
         float cost = 0;
-        for(int i = 0; i < 12; i++) {
+        int count=0;
+        for (int i=0; i<backtracking.getArr().length;i++){
+            if (backtracking.getArr()[i]==1){
+                count++;
+                for(int j=0; j<workshop.get(i).getDate().size();j++){
+                    view.setCellContent(workshop.get(i).getAcronym(), workshop.get(i).getCategory(),
+                            workshop.get(i).getPrice(), Color.ORANGE, workshop.get(i).getDate().get(j).getHour(), workshop.get(i).getDate().get(j).getDay());
+                 }
+            }
+        }
+       /* for(int i = 0; i < 12; i++) {
             for(int j = 0; j < 5; j++) {
                 if (i % 2 == 0) {
                     if(j % 2 == 0) {
@@ -45,35 +55,37 @@ public class Table {
                 }
                 cost += i * j;
             }
-        }
-
-        //Erase some cells
-        view.resetCellContent(4, 0);
-        categories[1 - 1]--;
-        view.resetCellContent(11, 1);
-        categories[2 - 1]--;
-        cost -= 11.0f;
-        view.resetCellContent(0, 1);
-        categories[1 - 1]--;
+        }*/
 
         //Set generic information
         view.setStartDateContent(LocalDateTime.now());
         view.setFinishDateContent(LocalDateTime.now());
-        view.setDurationContent(Duration.ZERO);
-        view.setSolutionsContent(10);
+        view.setDurationContent(Duration.ofNanos(backtracking.getTiempo_proceso()));
 
+        if(opcion==1){
+            view.setSolutionsContent(backtracking.getNumSoluciones());
+
+        }
         //Set time optimization information
-        view.setTotalWorkshopsContent(57);
-        view.setTotalHoursContent(57);
+        if(opcion==2){
+            view.setSolutionsContent(1);
+            view.setTotalWorkshopsContent(count);
+            view.setTotalHoursContent(backtracking.getVmejor());
+        }
+
 
         //Set cost information
-        view.setLimitCostContent(10000);
-        view.setBaseCostContent(cost);
-        view.setDiscountContent(15);
-        view.setFinalCostContent(cost * 0.85f);
-        for(int i = 0; i < categories.length; i++) {
-            view.setCategoryContent(i + 1, categories[i]);
+        if(opcion==3){
+            view.setSolutionsContent(1);
+            view.setLimitCostContent(10000);
+            view.setBaseCostContent(cost);
+            view.setDiscountContent(15);
+            view.setFinalCostContent(cost * 0.85f);
+            for(int i = 0; i < categories.length; i++) {
+                view.setCategoryContent(i + 1, categories[i]);
+            }
         }
+
     }
 }
 

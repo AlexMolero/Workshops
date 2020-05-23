@@ -24,8 +24,7 @@ public class main {
         Marcaje marcaje = new Marcaje();
         ReadFile file = new ReadFile(scanner);
         file.show();
-        String fileToRead = "50w.json"; // = file.getOption();
-
+        String fileToRead = file.getOption();
         File archivo = new File(path + fileToRead);
         String extension = file.getFileExtension(archivo);
         if (extension.equals(".json")) {
@@ -36,14 +35,17 @@ public class main {
         } else {
             System.out.println("Solo es valido un fichero json");
         }
-        Backtracking backtracking = new Backtracking(compatibilityArray, WorkshopConfig);
 
         //Operations operation = new Operations();
         boolean mejora;
         int option, presupuestoMaximo;
         int[] configuracion = new int[Num_Workshops];
-        int k = 0;
         int[] x = new int[Num_Workshops];
+        int k = 0;
+        Table table = new Table();
+        long startTime;
+        long endTime;
+        Backtracking backtracking = new Backtracking(compatibilityArray, WorkshopConfig);
 
         do {
             menu.show();
@@ -51,18 +53,29 @@ public class main {
             switch (option) {
                 case 1:
                     mejora = menu.mejora();
-                    if (!mejora){
+                    int[] prueba;
+                    startTime = System.nanoTime();
+                    backtracking.Backtracking1SinMejora(x, k);
+                    endTime = System.nanoTime();
+                    backtracking.setTiempo_proceso((endTime-startTime));
+                    table.mostrar(backtracking, WorkshopConfig,1);
+                    /*
+                    if (mejora){
                         backtracking.Backtracking1SinMejora(configuracion, k);
                     } else {
                         backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
-                    }
-                    Table table = new Table();
-                    table.mostrar(backtracking, WorkshopConfig);
+                    }*/
                     break;
                 case 2:
                     mejora = menu.mejora();
                     if (!mejora) {
+                        startTime = System.nanoTime();
                         backtracking.Backtracking2SinMejora(configuracion, k);
+                        endTime = System.nanoTime();
+                        backtracking.setTiempo_proceso((endTime-startTime));
+
+                        table.mostrar(backtracking, WorkshopConfig,2);
+
                     } else {
                         backtracking.Backtracking2ConMejora(configuracion, k, marcaje);
                     }
@@ -72,8 +85,14 @@ public class main {
                     System.out.print("Introduce el presupuesto maximo: ");
                     String strPresupuesto = scanner.nextLine();
                     presupuestoMaximo = Integer.parseInt(strPresupuesto);
+                    backtracking.setPresupuesto_limite(presupuestoMaximo);
                     if (!mejora) {
+                        startTime = System.nanoTime();
                         backtracking.Backtracking3SinMejora(configuracion, k, presupuestoMaximo);
+                        endTime = System.nanoTime();
+                        backtracking.setTiempo_proceso((endTime-startTime));
+                        table.mostrar(backtracking, WorkshopConfig,3);
+
                     } else {
                         backtracking.Backtracking3ConMejora(configuracion, k, presupuestoMaximo, marcaje);
                     }
@@ -82,7 +101,6 @@ public class main {
                     System.out.print("Error. Opcion no valida.");
                     break;
             }
-            System.out.println("Fin del programa");
 
         } while (true);
     }
