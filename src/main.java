@@ -20,7 +20,6 @@ public class main {
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
         Scanner scanner = new Scanner(System.in);
         Menu menu = new Menu(scanner);
-        Backtracking backtracking = new Backtracking();
         Marcaje marcaje = new Marcaje();
         ReadFile file = new ReadFile(scanner);
         file.show();
@@ -31,9 +30,12 @@ public class main {
             //READ JSON
             WorkshopConfig =   file.readJsonWorkshop(path+fileToRead);
             compatibilityArray = file.readJsonCompatibilities(path+fileToRead);
+            Num_Workshops = WorkshopConfig.size();
         }else{
             System.out.println("Solo es valido un fichero json");
         }
+        Backtracking backtracking = new Backtracking(compatibilityArray,WorkshopConfig);
+
         //Operations operation = new Operations();
         boolean mejora;
         int option, presupuestoMaximo;
@@ -45,11 +47,15 @@ public class main {
             switch (option){
                 case 1:
                     mejora = menu.mejora();
+                        backtracking.Backtracking1SinMejora(configuracion, k);
+
+                    System.out.println("HOLA");
+                    /*
                     if (mejora){
                         backtracking.Backtracking1SinMejora(configuracion, k);
                     } else {
                         backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
-                    }
+                    }*/
                     break;
                 case 2:
                     mejora = menu.mejora();
@@ -74,13 +80,15 @@ public class main {
                     System.out.print("Error. Opcion no valida.");
                     break;
             }
+            System.out.println("Fin del programa");
+
         } while (true);
     }
 
     public void mostrar(){
-        menu.show();
+       /* menu.show();
         int option = menu.getOption();
-        menu.actions(option);
+        menu.actions(option);*/
         //Prepare view
 
         final ScheduleView view = new ScheduleView();

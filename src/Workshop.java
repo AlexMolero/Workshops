@@ -20,9 +20,6 @@ public class Workshop extends Date{
         this.rgb = rgb;
     }
 
-    public Workshop() {
-
-    }
 
     public String getAcronym() {
         return acronym;

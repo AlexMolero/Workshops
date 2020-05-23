@@ -9,23 +9,29 @@ public class Backtracking{
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
 
-
-
+    public Backtracking(int[][] incompatibilidad, List<Workshop> workshop) {
+        this.incompatibilidad = incompatibilidad;
+        this.workshop = workshop;
+        Num_Workshops = workshop.size();
+    }
 
     public void Backtracking1SinMejora(int[] x, int k){
-        x[k] = -1;
-        while (x[k] < 1){
-            x[k]++;
-            if (k == Num_Workshops){
+        x[k] = 2;
+        while (x[k] >=0){
+            x[k]--;
+            if (k == (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
+                    System.out.println("NUEVA SOLUCION" + numSoluciones);
+
                     numSoluciones++;
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < (Num_Workshops-1)){
                 if (buenaSinMejora(x, k)) {
-                    Backtracking1SinMejora(x, k);
+                    Backtracking1SinMejora(x, (k+1));
                 }
             }
         }
+
     }
 
     public void Backtracking2SinMejora(int[] x, int k){
@@ -61,10 +67,10 @@ public class Backtracking{
     }
 
     public boolean buenaSinMejora(int[] x, int k){
-        if (x[k] == 0){
+        if (x[k] == 0){ //Siempre entrará aqui
             return true;
         }
-        for (int i = 0; i < k-1; i++) {
+        for (int i = 0; i < k; i++) {
             if (x[i] == 1){
                 if (incompatibilidad[k][i] == 0){
                     return false;
@@ -72,7 +78,7 @@ public class Backtracking{
                 for (int j = 0; j < workshop.get(i).getNumHorarios(); j++) {
                     for (int l = 0; l < workshop.get(k).getNumHorarios(); l++) {
                         //Todo Esto esta mal!!!!!
-                        if (workshop.get(k).getDay() == workshop.get(i).getDay() && workshop.get(k).getHour() == workshop.get(i).getHour()){
+                        if (workshop.get(k).getDate().get(l).getDay() == workshop.get(i).getDate().get(j).getDay() && workshop.get(k).getDate().get(l).getHour() == workshop.get(i).getDate().get(j).getHour()){
                             return false;
                         }
                     }
