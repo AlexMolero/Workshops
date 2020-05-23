@@ -5,7 +5,7 @@ public class Backtracking{
     private int[][] incompatibilidad;
     private int Num_Workshops;
     private int numSoluciones = 0;
-    private int Vmejor = 0;
+    private float Vmejor = 0;
     private int[] Xmejor = new int[Num_Workshops];
     private List<Workshop> workshop = new ArrayList<>();
     private int[] configuracion = new int[Num_Workshops];
@@ -80,7 +80,7 @@ public class Backtracking{
     }
 
     public boolean buenaSinMejora(int[] x, int k){
-        if (x[k] == 0){ //Siempre entrará aqui
+        if (x[k] == 0){
             return true;
         }
         for (int i = 0; i < k; i++) {
@@ -90,7 +90,6 @@ public class Backtracking{
                 }
                 for (int j = 0; j < workshop.get(i).getNumHorarios(); j++) {
                     for (int l = 0; l < workshop.get(k).getNumHorarios(); l++) {
-                        //Todo Esto esta mal!!!!!
                         if (workshop.get(k).getDate().get(l).getDay() == workshop.get(i).getDate().get(j).getDay() && workshop.get(k).getDate().get(l).getHour() == workshop.get(i).getDate().get(j).getHour()){
                             return false;
                         }
@@ -154,7 +153,7 @@ public class Backtracking{
         }
         if (presupuesto < presupuestoMaximo && presupuesto > Vmejor){
             Xmejor = x;
-            //Vmejor = presupuesto;
+            Vmejor = presupuesto;
             System.out.println("Presupuesto: " + presupuesto);
         }
     }
@@ -165,21 +164,25 @@ public class Backtracking{
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
-            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
-                m.horarios.add(workshop.get(k).date.get(i));
+            if (x[k] == 1){
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.add(workshop.get(k).getDate().get(i));
+                }
             }
-            if (k == Num_Workshops){
+            if (k == Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     numSoluciones++;
-                    System.out.println("Nueva solucion: " + numSoluciones);
+                    System.out.println("Nueva solucion: " + numSoluciones + "Numero horarios" + m.horarios.size());
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     Backtracking1ConMejora(x, (k+1), m);
                 }
             }
-            for (int i = 0; i < m.horarios.size(); i++) {
-                m.horarios.remove(m.horarios.get(i));
+            if (x[k] == 1){
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.remove(m.horarios.size()-1);
+                }
             }
         }
     }
@@ -188,23 +191,27 @@ public class Backtracking{
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
-            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
-                m.horarios.add(workshop.get(k).date.get(i));
+            if (x[k] == 1){
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.add(workshop.get(k).getDate().get(i));
+                }
+                m.num_horas_totales += workshop.get(k).numHorarios;
             }
-            m.num_horas_totales += workshop.get(k).numHorarios;
-            if (k == Num_Workshops){
+            if (k == Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     tratarSolucion2ConMejora(x, k, m);
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     Backtracking2ConMejora(x, (k+1), m);
                 }
             }
-            for (int i = 0; i < m.horarios.size(); i++) {
-                m.horarios.remove(m.horarios.get(i));
+            if (x[k] == 1){
+                m.num_horas_totales -= workshop.get(k).numHorarios;
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.remove(m.horarios.size()-1);
+                }
             }
-            m.num_horas_totales -= workshop.get(k).numHorarios;
         }
     }
 
@@ -212,25 +219,29 @@ public class Backtracking{
         x[k] = -1;
         while (x[k] < 1){
             x[k]++;
-            for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
-                m.horarios.add(workshop.get(k).date.get(i));
+            if (x[k] == 1){
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.add(workshop.get(k).getDate().get(i));
+                }
+                m.categorias[workshop.get(k).getCategory()]++;
+                m.presupuesto += workshop.get(k).getPrice();
             }
-            m.categorias[workshop.get(k).getCategory()]++;
-            m.presupuesto += workshop.get(k).getPrice();
-            if (k == Num_Workshops){
+            if (k == Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     tratarSolucion3ConMejora(x, k, presupuestoMaximo, m);
                 }
-            } else if (k < Num_Workshops){
+            } else if (k < Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
                     Backtracking3ConMejora(x, (k+1), presupuestoMaximo, m);
                 }
             }
-            for (int i = 0; i < m.horarios.size(); i++) {
-                m.horarios.remove(m.horarios.get(i));
+            if (x[k] == 1) {
+                m.categorias[workshop.get(k).getCategory()]--;
+                m.presupuesto -= workshop.get(k).getPrice();
+                for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+                    m.horarios.remove(m.horarios.size()-1);
+                }
             }
-            m.categorias[workshop.get(k).getCategory()]--;
-            m.presupuesto -= workshop.get(k).getPrice();
         }
 
     }
@@ -239,17 +250,16 @@ public class Backtracking{
         if (x[k] == 0){
             return true;
         }
-        for (int i = 0; i < k-1; i++) {
+        for (int i = 0; i < k; i++) {
             if (x[i] == 1){
                 if (incompatibilidad[k][i] == 0){
                     return false;
                 }
             }
         }
-        for (int j = 0; j < workshop.get(k).getNumHorarios(); j++) {
-            for (int l = 0; l < m.horarios.size(); l++) {
-                //Todo Esto esta mal!!!!!
-                if (workshop.get(k).getDay() == workshop.get(l).getDay() && workshop.get(k).getHour() == workshop.get(l).getHour()){
+        for (int i = 0; i < workshop.get(k).getNumHorarios(); i++) {
+            for (int j = 0; j < m.horarios.size()-workshop.get(k).getNumHorarios(); j++) {
+                if (workshop.get(k).getDate().get(i).getDay() == m.horarios.get(j).getDay() && workshop.get(k).getDate().get(i).getHour() == m.horarios.get(j).getHour()){
                     return false;
                 }
             }
@@ -261,6 +271,7 @@ public class Backtracking{
         if (m.num_horas_totales > Vmejor){
             Xmejor = x;
             Vmejor = m.num_horas_totales;
+            System.out.println("Horas totales: " + Vmejor);
         }
     }
 
@@ -279,7 +290,8 @@ public class Backtracking{
         }
         if (m.presupuesto < presupuestoMaximo && m.presupuesto > Vmejor){
             Xmejor = x;
-            Vmejor = (int)m.presupuesto;
+            Vmejor = m.presupuesto;
+            System.out.println("Preupuesto: " + m.presupuesto);
         }
     }
 }

@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Marcaje {
     float presupuesto;
-    int[] categorias;
+    int[] categorias = new int[6];
     int num_horas_totales;
-    List<Date> horarios;
+    List<Date> horarios = new ArrayList<>();
 
     public Marcaje(float presupuesto, int[] categorias, int num_horas_totales, List<Date> horarios) {
         this.presupuesto = presupuesto;

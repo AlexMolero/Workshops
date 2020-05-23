@@ -24,7 +24,8 @@ public class main {
         Marcaje marcaje = new Marcaje();
         ReadFile file = new ReadFile(scanner);
         file.show();
-        String fileToRead = file.getOption();
+        String fileToRead = "50w.json"; // = file.getOption();
+
         File archivo = new File(path + fileToRead);
         String extension = file.getFileExtension(archivo);
         if (extension.equals(".json")) {
@@ -50,17 +51,13 @@ public class main {
             switch (option) {
                 case 1:
                     mejora = menu.mejora();
-                    backtracking.Backtracking1SinMejora(x, k);
-                    Table table = new Table();
-
-                    table.mostrar(backtracking, WorkshopConfig);
-                    System.out.println("HOLA");
-                    /*
-                    if (mejora){
+                    if (!mejora){
                         backtracking.Backtracking1SinMejora(configuracion, k);
                     } else {
                         backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
-                    }*/
+                    }
+                    Table table = new Table();
+                    table.mostrar(backtracking, WorkshopConfig);
                     break;
                 case 2:
                     mejora = menu.mejora();
