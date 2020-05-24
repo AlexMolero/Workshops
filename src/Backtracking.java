@@ -40,9 +40,11 @@ class Backtracking{
     int getNumSoluciones() {
         return numSoluciones;
     }
+
     private void rellenarConfiguracion(int[] x, int[] arr){
         System.arraycopy(x, 0, arr, 0, x.length);
     }
+
     void Backtracking1SinMejora(int[] x, int k){
         x[k] = -1;
         while (x[k] < 1){
@@ -184,7 +186,6 @@ class Backtracking{
                 if (buenaConMejora(x, k, m)) {
                     numSoluciones++;
                     rellenarConfiguracion(x, configuracion);
-                    System.out.println("Nueva solucion: " + numSoluciones + "Numero horarios" + m.horarios.size());
                 }
             } else if (k < Num_Workshops-1){
                 if (buenaConMejora(x, k, m)) {
