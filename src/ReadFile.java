@@ -89,8 +89,8 @@ public class ReadFile {
         }
         return WorkshopConfig;
     }
-    public int[][] readJsonCompatibilities(String path){
-        int[][] compatibilityArray = new int[50][50];
+    public int[][] readJsonCompatibilities(String path,int size){
+        int[][] compatibilityArray = new int[size][size];
 
         JSONParser parser = new JSONParser();
         try {

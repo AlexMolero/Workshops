@@ -61,4 +61,12 @@ public class Workshop extends Date{
     public void setDate(List<Date> date) {
         this.date = date;
     }
+
+    public List<Integer> getRgb() {
+        return rgb;
+    }
+
+    public void setRgb(List<Integer> rgb) {
+        this.rgb = rgb;
+    }
 }

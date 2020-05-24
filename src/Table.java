@@ -26,36 +26,32 @@ public class Table {
         for (int i = 0; i<backtracking.getConfiguracion().length; i++){
             if (backtracking.getConfiguracion()[i]==1){
                 count++;
+                cost+=workshop.get(i).getPrice();
+                    switch (workshop.get(i).getCategory()){
+                        case 1:
+                            categories[0]++;
+                            break;
+                        case 2:
+                            categories[1]++;
+                            break;
+                        case 3:
+                            categories[2]++;
+                            break;
+                        case 4:
+                            categories[3]++;
+                            break;
+                        case 5:
+                            categories[4]++;
+                            break;
+                    }
+
                 for(int j=0; j<workshop.get(i).getDate().size();j++){
+                    Color color = new Color(workshop.get(i).getRgb().get(0),workshop.get(i).getRgb().get(1),workshop.get(i).getRgb().get(2));
                     view.setCellContent(workshop.get(i).getAcronym(), workshop.get(i).getCategory(),
-                            workshop.get(i).getPrice(), Color.ORANGE, workshop.get(i).getDate().get(j).getHour(), workshop.get(i).getDate().get(j).getDay());
+                            workshop.get(i).getPrice(), color, workshop.get(i).getDate().get(j).getHour(), workshop.get(i).getDate().get(j).getDay());
                  }
             }
         }
-       /* for(int i = 0; i < 12; i++) {
-            for(int j = 0; j < 5; j++) {
-                if (i % 2 == 0) {
-                    if(j % 2 == 0) {
-                        view.setCellContent(String.format("Row: %d - Col: %d", i, j), 1,
-                                i * j, Color.ORANGE, i, j);
-                    } else {
-                        view.setCellContent(String.format("Row: %d - Col: %d", i, j), 1,
-                                i * j, Color.PINK, i, j);
-                    }
-                    categories[1 - 1]++;
-                } else {
-                    if(j % 2 == 0) {
-                        view.setCellContent(String.format("Row: %d - Col: %d", i, j), 2,
-                                i * j, Color.CYAN, i, j);
-                    } else {
-                        view.setCellContent(String.format("Row: %d - Col: %d", i, j), 2,
-                                i * j, Color.GREEN, i, j);
-                    }
-                    categories[2 - 1]++;
-                }
-                cost += i * j;
-            }
-        }*/
 
         //Set generic information
         view.setStartDateContent(LocalDateTime.now());
@@ -73,19 +69,29 @@ public class Table {
             view.setTotalHoursContent(backtracking.getVmejor());
         }
 
-
         //Set cost information
         if(opcion==3){
             view.setSolutionsContent(1);
-            view.setLimitCostContent(10000);
+            view.setLimitCostContent(backtracking.getPresupuesto_limite());
             view.setBaseCostContent(cost);
-            view.setDiscountContent(15);
-            view.setFinalCostContent(cost * 0.85f);
+            view.setFinalCostContent(backtracking.getPresupuesto_final());
             for(int i = 0; i < categories.length; i++) {
                 view.setCategoryContent(i + 1, categories[i]);
             }
-        }
+            int num_total_categorias=0;
+            for (int i = 0; i < 5; i++) {
+                if (categories[i] > 0){
+                    num_total_categorias++;
+                }
+            }
+           if(num_total_categorias>2){
+                view.setDiscountContent(15);
+           }else if(num_total_categorias==2){
+                view.setDiscountContent(5);
+            }else{
 
+           }
+        }
     }
 }
 

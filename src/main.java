@@ -16,7 +16,7 @@ public class main {
     public static void main(String[] args) {
         int Num_Workshops = 0;
         List<Workshop> WorkshopConfig = new ArrayList<>();
-        int[][] compatibilityArray = new int[50][50];
+        int[][] compatibilityArray;
 
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
         Scanner scanner = new Scanner(System.in);
@@ -27,14 +27,12 @@ public class main {
         String fileToRead = file.getOption();
         File archivo = new File(path + fileToRead);
         String extension = file.getFileExtension(archivo);
-        if (extension.equals(".json")) {
-            //READ JSON
-            WorkshopConfig = file.readJsonWorkshop(path + fileToRead);
-            compatibilityArray = file.readJsonCompatibilities(path + fileToRead);
-            Num_Workshops = WorkshopConfig.size();
-        } else {
-            System.out.println("Solo es valido un fichero json");
-        }
+
+        WorkshopConfig = file.readJsonWorkshop(path + fileToRead);
+
+        compatibilityArray = file.readJsonCompatibilities(path + fileToRead,WorkshopConfig.size());
+        Num_Workshops = WorkshopConfig.size();
+
         //Operations operation = new Operations();
         boolean mejora;
         int option, presupuestoMaximo;
@@ -52,13 +50,19 @@ public class main {
                     mejora = menu.mejora();
                     startTime = System.nanoTime();
                     if (!mejora){
+                        startTime = System.nanoTime();
                         backtracking.Backtracking1SinMejora(configuracion, k);
+                        endTime = System.nanoTime();
+                        backtracking.setTiempo_proceso((endTime-startTime));
+                        table.mostrar(backtracking, WorkshopConfig,1);
                     } else {
+                        startTime = System.nanoTime();
                         backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
+                        endTime = System.nanoTime();
+                        backtracking.setTiempo_proceso((endTime-startTime));
+                        table.mostrar(backtracking, WorkshopConfig,1);
                     }
-                    endTime = System.nanoTime();
-                    backtracking.setTiempo_proceso((endTime-startTime));
-                    table.mostrar(backtracking, WorkshopConfig,1);
+
                     break;
                 case 2:
                     mejora = menu.mejora();
@@ -83,14 +87,17 @@ public class main {
                     } else {
                         backtracking.Backtracking3ConMejora(configuracion, k, presupuestoMaximo, marcaje);
                     }
+
                     endTime = System.nanoTime();
                     backtracking.setTiempo_proceso((endTime-startTime));
+
                     table.mostrar(backtracking, WorkshopConfig,3);
                     break;
                 default:
                     System.out.print("Error. Opcion no valida.");
                     break;
             }
+
         } while (true);
     }
 }

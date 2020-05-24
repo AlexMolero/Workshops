@@ -9,12 +9,27 @@ class Backtracking{
     private long tiempo_proceso=0;
     private int[] configuracion;
     private float presupuesto_final;
+    private float presupuesto_limite;
 
     Backtracking(int[][] incompatibilidad, List<Workshop> workshop) {
         this.incompatibilidad = incompatibilidad;
         this.workshop = workshop;
         Num_Workshops = workshop.size();
         this.configuracion = new int[Num_Workshops];
+    }
+    public float getPresupuesto_final() {
+        return presupuesto_final;
+    }
+
+    public void setPresupuesto_final(float presupuesto_final) {
+        this.presupuesto_final = presupuesto_final;
+    }
+    public float getPresupuesto() {
+        return presupuesto_final;
+    }
+
+    public float getPresupuesto_limite() {
+        return presupuesto_limite;
     }
 
     private void setPresupuesto(float presupuesto) {
@@ -305,5 +320,9 @@ class Backtracking{
             rellenarConfiguracion(x, configuracion);
             setPresupuesto(m.presupuesto);
         }
+    }
+    public void clear (Backtracking backtracking){
+        //limpiar memoria
+        this.numSoluciones = 0;
     }
 }
