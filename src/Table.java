@@ -6,19 +6,16 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Table {
-    public Table() {
+class Table {
+    Table() {
     }
-    public void mostrar(Backtracking backtracking, List<Workshop> workshop, int opcion){
+    void mostrar(Backtracking backtracking, List<Workshop> workshop, int opcion){
 
         final ScheduleView view = new ScheduleView();
 
         //Show view
         SwingUtilities.invokeLater(() -> view.setVisible(true));
 
-        /*****************
-         SAMPLE CODE
-         ****************/
         //Set cells content
         int[] categories = new int[5];
         float cost = 0;
@@ -88,8 +85,6 @@ public class Table {
                 view.setDiscountContent(15);
            }else if(num_total_categorias==2){
                 view.setDiscountContent(5);
-            }else{
-
            }
         }
     }

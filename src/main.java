@@ -1,12 +1,4 @@
-import view.ScheduleView;
-
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
-import java.io.FileReader;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,8 +6,8 @@ public class main {
     private static String path = "Dataset/";
 
     public static void main(String[] args) {
-        int Num_Workshops = 0;
-        List<Workshop> WorkshopConfig = new ArrayList<>();
+        int Num_Workshops;
+        List<Workshop> WorkshopConfig;
         int[][] compatibilityArray;
 
         System.out.println("_-_-_- WorkshopScheduler -_-_-_ ");
@@ -50,19 +42,14 @@ public class main {
                     mejora = menu.mejora();
                     startTime = System.nanoTime();
                     if (!mejora){
-                        startTime = System.nanoTime();
                         backtracking.Backtracking1SinMejora(configuracion, k);
-                        endTime = System.nanoTime();
-                        backtracking.setTiempo_proceso((endTime-startTime));
-                        table.mostrar(backtracking, WorkshopConfig,1);
-                    } else {
-                        startTime = System.nanoTime();
-                        backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
-                        endTime = System.nanoTime();
-                        backtracking.setTiempo_proceso((endTime-startTime));
-                        table.mostrar(backtracking, WorkshopConfig,1);
-                    }
 
+                    } else {
+                        backtracking.Backtracking1ConMejora(configuracion, k, marcaje);
+                    }
+                    endTime = System.nanoTime();
+                    backtracking.setTiempo_proceso((endTime-startTime));
+                    table.mostrar(backtracking, WorkshopConfig,1);
                     break;
                 case 2:
                     mejora = menu.mejora();
@@ -87,17 +74,14 @@ public class main {
                     } else {
                         backtracking.Backtracking3ConMejora(configuracion, k, presupuestoMaximo, marcaje);
                     }
-
                     endTime = System.nanoTime();
                     backtracking.setTiempo_proceso((endTime-startTime));
-
                     table.mostrar(backtracking, WorkshopConfig,3);
                     break;
                 default:
                     System.out.print("Error. Opcion no valida.");
                     break;
             }
-
         } while (true);
     }
 }

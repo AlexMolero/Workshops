@@ -1,18 +1,14 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class Workshop extends Date{
-
+public class Workshop{
     private String acronym;
     private float price;
     private int category;
     int numHorarios;
-    private List<Date> date = new ArrayList<>();
-    private List<Integer> rgb = new ArrayList<>();
+    private List<Date> date;
+    private List<Integer> rgb;
 
-    public Workshop() { }
-
-    public Workshop(String acronym, float price, int category, int numHorarios, List<Date> date, List<Integer> rgb) {
+    Workshop(String acronym, float price, int category, int numHorarios, List<Date> date, List<Integer> rgb) {
         this.acronym = acronym;
         this.price = price;
         this.category = category;
@@ -20,7 +16,6 @@ public class Workshop extends Date{
         this.date = date;
         this.rgb = rgb;
     }
-
 
     public String getAcronym() {
         return acronym;
@@ -46,27 +41,15 @@ public class Workshop extends Date{
         this.category = category;
     }
 
-    public int getNumHorarios() {
+    int getNumHorarios() {
         return numHorarios;
     }
 
-    public void setNumHorarios(int numHorarios) {
-        this.numHorarios = numHorarios;
-    }
-
-    public List<Date> getDate() {
+    List<Date> getDate() {
         return date;
     }
 
-    public void setDate(List<Date> date) {
-        this.date = date;
-    }
-
-    public List<Integer> getRgb() {
+    List<Integer> getRgb() {
         return rgb;
-    }
-
-    public void setRgb(List<Integer> rgb) {
-        this.rgb = rgb;
     }
 }

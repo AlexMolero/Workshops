@@ -2,14 +2,9 @@ public class Date {
     private int hour;
     private int day;
 
-    public Date(){
+    Date(){
 
     }
-    public Date(int hour, int day) {
-        this.hour = hour;
-        this.day = day;
-    }
-
 
     public int getHour() {
         return hour;
