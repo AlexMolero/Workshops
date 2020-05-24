@@ -25,7 +25,6 @@ public class main {
         compatibilityArray = file.readJsonCompatibilities(path + fileToRead,WorkshopConfig.size());
         Num_Workshops = WorkshopConfig.size();
 
-        //Operations operation = new Operations();
         boolean mejora;
         int option, presupuestoMaximo;
         int[] configuracion = new int[Num_Workshops];
