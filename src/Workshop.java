@@ -6,9 +6,9 @@ public class Workshop extends Date{
     private String acronym;
     private float price;
     private int category;
-    public int numHorarios;
-    List<Date> date = new ArrayList<>();
-    List<Integer> rgb = new ArrayList<>();
+    int numHorarios;
+    private List<Date> date = new ArrayList<>();
+    private List<Integer> rgb = new ArrayList<>();
 
     public Workshop() { }
 

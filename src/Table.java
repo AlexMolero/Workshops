@@ -23,8 +23,8 @@ public class Table {
         int[] categories = new int[5];
         float cost = 0;
         int count=0;
-        for (int i=0; i<backtracking.getArr().length;i++){
-            if (backtracking.getArr()[i]==1){
+        for (int i = 0; i<backtracking.getConfiguracion().length; i++){
+            if (backtracking.getConfiguracion()[i]==1){
                 count++;
                 for(int j=0; j<workshop.get(i).getDate().size();j++){
                     view.setCellContent(workshop.get(i).getAcronym(), workshop.get(i).getCategory(),

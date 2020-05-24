@@ -21,22 +21,6 @@ public class Menu {
 
         return Integer.parseInt(strOption);
     }
-    public void actions(int option) {
-        Menu menu = new Menu(scanner);
-        switch (option){
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            default:
-                break;
-        }
-    }
 
     boolean mejora(){
         while (true){
